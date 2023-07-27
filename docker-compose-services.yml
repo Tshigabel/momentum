@@ -1,0 +1,35 @@
+version: '2'
+
+services:
+  localstack:
+    image: localstack/localstack-full:0.11.6
+    ##image: localstack/localstack:0.10.6
+    ports:
+      - "4566:4566"
+      - "8082:8082"
+    environment:
+      - SERVICES=s3:4566
+      - HOSTMANE_EXTERNAL=localhost
+      - DEBUG=1
+      - PORT_WEB_UI=8082
+      - START_WEB=1
+      - AWS_DEFAULT_REGION=us-west-1
+      - AWS_SECRET_ACCESS_KEY=BLABLABLA
+      - AWS_ACCESS_KEY_ID=AAAAAAAAAAAA
+    volumes:
+      - ./localstack/:/docker-entrypoint-initaws.d/
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+      - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
+volumes:
+  db:
+    driver: local
+
