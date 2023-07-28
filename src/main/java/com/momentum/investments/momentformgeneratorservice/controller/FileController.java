@@ -1,7 +1,7 @@
 package com.momentum.investments.momentformgeneratorservice.controller;
 
 import com.momentum.investments.momentformgeneratorservice.dto.FileLogDto;
-import com.momentum.investments.momentformgeneratorservice.service.ConvertCsvToPdf;
+import com.momentum.investments.momentformgeneratorservice.dto.FileType;
 import com.momentum.investments.momentformgeneratorservice.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,11 +23,9 @@ import java.util.UUID;
 @Slf4j
 public class FileController {
     private final FileService fileService;
-    private final ConvertCsvToPdf convertCsvToPdf;
 
-    public FileController(@Autowired FileService fileService, @Autowired ConvertCsvToPdf convertCsvToPdf) {
+    public FileController(@Autowired FileService fileService) {
         this.fileService = fileService;
-        this.convertCsvToPdf = convertCsvToPdf;
     }
 
     @GetMapping("/files")
@@ -46,10 +44,10 @@ public class FileController {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
     public ResponseEntity<byte[]>
-    getListOfFiles(@RequestParam UUID fileId)  throws IOException {
+    convert(@RequestParam UUID fileId, FileType targetFileType)  throws IOException {
 
         log.info("starting conversion");
-        var filename = convertCsvToPdf.convert(fileId);
+        var filename = fileService.convert(fileId, targetFileType);
 
         log.info("completed conversion of ");
         byte[] fileContent = Files.readAllBytes(new File(filename).toPath());
@@ -58,5 +56,24 @@ public class FileController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="
                         + filename)
                 .body(fileContent);
+    }
+
+    @GetMapping ("/download")
+    @Operation(summary = "convert csv file to pdf", description = "give a unique file id for a csv file, covert and download pdf file")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+    })
+    public ResponseEntity<byte[]>
+    download(@RequestParam UUID fileId)  throws IOException {
+
+        log.info("beginning download of file " + fileId);
+        var fileNameAndBytes = fileService.getFileNameAndData(fileId);
+
+        log.info("completed download of file " + fileId);
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="
+                        + fileNameAndBytes.getFirst())
+                .body(fileNameAndBytes.getSecond());
     }
 }

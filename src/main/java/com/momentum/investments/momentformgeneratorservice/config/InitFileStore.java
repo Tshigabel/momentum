@@ -3,7 +3,7 @@ package com.momentum.investments.momentformgeneratorservice.config;
 import com.momentum.investments.momentformgeneratorservice.dto.FileType;
 import com.momentum.investments.momentformgeneratorservice.repository.FileLogRepository;
 import com.momentum.investments.momentformgeneratorservice.repository.entity.FileLog;
-import com.momentum.investments.momentformgeneratorservice.service.IFileManager;
+import com.momentum.investments.momentformgeneratorservice.service.filestore.IFileStoreManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -16,14 +16,13 @@ import java.util.UUID;
 public class InitFileStore {
 
     private final FileLogRepository fileLogRepository;
-    private final IFileManager fileManager;
+    private final IFileStoreManager fileManager;
 
-    public InitFileStore(@Autowired FileLogRepository fileLogRepository, @Autowired IFileManager fileManager) {
+    public InitFileStore(@Autowired FileLogRepository fileLogRepository, @Autowired IFileStoreManager fileManager) {
         this.fileManager = fileManager;
         this.fileLogRepository = fileLogRepository;
     }
 
-    //@PostConstruct
     @EventListener(ApplicationReadyEvent.class)
     public void saveCvsFiles() {
 
