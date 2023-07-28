@@ -8,6 +8,7 @@ import com.momentum.investments.momentformgeneratorservice.dto.FileType;
 import com.momentum.investments.momentformgeneratorservice.exception.FileDownloadException;
 import com.momentum.investments.momentformgeneratorservice.exception.FileUploadException;
 import com.momentum.investments.momentformgeneratorservice.exception.GenericException;
+import com.momentum.investments.momentformgeneratorservice.oap.IPerformanceMonitor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,8 +55,8 @@ public class S3Service implements IFileStoreManager {
             throw new FileDownloadException("We failed to download the file successfully, please try again later(557)");
         }
     }
-
     @Override
+    @IPerformanceMonitor
     public String uploadFile(File file) {
 
         var key = UUID.randomUUID().toString();
