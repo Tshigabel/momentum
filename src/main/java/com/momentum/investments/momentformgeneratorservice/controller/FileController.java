@@ -1,6 +1,7 @@
 package com.momentum.investments.momentformgeneratorservice.controller;
 
 import com.momentum.investments.momentformgeneratorservice.dto.FileLogDto;
+import com.momentum.investments.momentformgeneratorservice.dto.FileStoreType;
 import com.momentum.investments.momentformgeneratorservice.dto.FileType;
 import com.momentum.investments.momentformgeneratorservice.service.FileService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -21,6 +22,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/file/")
 @Slf4j
+@CrossOrigin("*")
 public class FileController {
     private final FileService fileService;
 
@@ -39,23 +41,19 @@ public class FileController {
 
 
     @PostMapping ("/convert")
-    @Operation(summary = "convert csv file to pdf", description = "give a unique file id for a csv file, covert and download pdf file")
+    @Operation(summary = "convert csv file to pdf", description = "give a unique file id for a csv file, covert the file and return file ref")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
     })
-    public ResponseEntity<byte[]>
-    convert(@RequestParam UUID fileId, FileType targetFileType)  throws IOException {
+    public UUID
+    convert(@RequestParam UUID fileId,@RequestParam FileType targetFileType,@RequestParam FileStoreType fileStoreType)  throws IOException {
 
-        log.info("starting conversion");
-        var filename = fileService.convert(fileId, targetFileType);
+        log.info("starting conversion for " + fileId);
+        var newFileId = fileService.convert(fileId, targetFileType, fileStoreType);
+        log.info("completed conversion for " + fileId);
 
-        log.info("completed conversion of ");
-        byte[] fileContent = Files.readAllBytes(new File(filename).toPath());
-
-        return ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename="
-                        + filename)
-                .body(fileContent);
+        //@todo add validation for already exising files
+        return newFileId;
     }
 
     @GetMapping ("/download")

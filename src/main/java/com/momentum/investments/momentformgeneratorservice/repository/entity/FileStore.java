@@ -1,7 +1,5 @@
 package com.momentum.investments.momentformgeneratorservice.repository.entity;
 
-import com.momentum.investments.momentformgeneratorservice.dto.FileStoreType;
-import com.momentum.investments.momentformgeneratorservice.dto.FileType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -18,8 +17,8 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "file_log", schema = "momentum_investments")
-public class FileLog {
+@Table(name = "file_store", schema = "momentum_investments")
+public class FileStore {
 
 
     @Id
@@ -43,21 +42,7 @@ public class FileLog {
     @UpdateTimestamp
     private Timestamp modifiedDate;
 
-    @Column(name = "original_file_name", nullable = true)
-    private String originalFileName;
-
-    @Column(name = "checksum", nullable = true)
-    private String checksum;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "file_type")
-    private FileType fileType;
-
-    @Enumerated(EnumType.STRING)
-    //@Column(name = "file_store_type")
-    private FileStoreType fileStoreType;
-
-
-    @Column(name = "storage_id", unique = true)
-    private String storageId;
+    @Basic(fetch = FetchType.LAZY)
+    @Column(name = "file_data")
+    private byte[] fileData;
 }

@@ -1,18 +1,20 @@
 package com.momentum.investments.momentformgeneratorservice.service.filestore;
 
+import com.momentum.investments.momentformgeneratorservice.dto.FileStoreType;
 import com.momentum.investments.momentformgeneratorservice.dto.FileType;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
-import java.util.UUID;
 
 public interface IFileStoreManager {
 
-    InputStream getFileInputStream(FileType fileType, String storageId) throws IOException;
+    byte[] getFileContent(FileType fileType, String storageId) throws IOException;
 
-    String uploadFile(File file);
+    String uploadFile(File file) throws FileNotFoundException;
 
-    List<String> getListOfExistingFiles();
+    List<String> getListOfExistingFiles() throws IOException;
+
+    FileStoreType getType();
 }

@@ -1,8 +1,9 @@
 package com.momentum.investments.momentformgeneratorservice.dto;
 
-public enum FileType {
-    CSV,
-    PDF,
+public enum FileStoreType {
+    ATMOZ_SFTP,
 
-    HTML
+    AWS_S3,
+
+    AZURE
 }

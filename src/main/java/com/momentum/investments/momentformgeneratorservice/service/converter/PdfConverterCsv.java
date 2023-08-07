@@ -12,18 +12,17 @@ import com.momentum.investments.momentformgeneratorservice.exception.GenericExce
 import com.momentum.investments.momentformgeneratorservice.repository.entity.FileLog;
 import org.springframework.stereotype.Service;
 
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 
 @Service
 public class PdfConverterCsv implements CsvFileConverter {
     @Override
-    public String execute(FileLog fileLog, InputStream contentStream) throws IOException {
+    public String execute(FileLog fileLog, byte[] content) throws IOException {
 
         try {
             /* Step -1 : Read input CSV file in */
+
+            InputStream contentStream = new ByteArrayInputStream(content);
             CSVReader reader = new CSVReader(new InputStreamReader(contentStream));
             /* Variables to loop through the CSV File */
             String[] nextLine; /* for every line in the file */

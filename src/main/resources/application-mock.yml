@@ -28,4 +28,8 @@ file-manager:
     output-bucket: pfd-form
     region: us-west-1
     endpoint: http://localhost:4566
-
+  atmoz-sftp:
+    username: foo
+    password: pass
+    host: localhost
+    port: 2222

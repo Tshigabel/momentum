@@ -9,7 +9,7 @@ import java.io.InputStream;
 
 public interface CsvFileConverter {
 
-    String execute(final FileLog fileLog, InputStream contentStream) throws IOException;
+    String execute(final FileLog fileLog, byte[] contentStream) throws IOException;
 
     FileType getType();
 }

@@ -1,6 +1,25 @@
 version: '2'
 
 services:
+#  vsftpd:
+#    image: fauria/vsftpd
+#    environment:
+#      - FTP_USER=myuser
+#      - FTP_PASS=mYp4sS
+#    ports:
+#      - 0.0.0.0:20:20
+#      - 0.0.0.0:21:21
+#    volumes:
+#      - /var/app/ftp:/home/vsftpd
+#      - /var/log/ftp:/var/log/vsftpd
+#  sftp:
+#    image: atmoz/sftp
+#    volumes:
+#      - foo:/home/foo/upload
+#      - foo:/users.conf:/etc/sftp/users.conf
+#    ports:
+#      - "22:22"
+#    command: foo:pass:1001:::upload
   localstack:
     image: localstack/localstack-full:0.11.6
     ##image: localstack/localstack:0.10.6
@@ -31,5 +50,6 @@ services:
       - ./db/init.sql:/docker-entrypoint-initdb.d/create_tables.sql
 volumes:
   db:
+  foo:
     driver: local
 

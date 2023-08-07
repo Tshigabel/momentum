@@ -6,22 +6,16 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.context.annotation.Configuration;
 
-@ComponentScan(basePackages = "com.momentum.investments.momentformgeneratorservice")
-@EnableJpaRepositories(basePackages = {"com.momentum.investments.momentformgeneratorservice.repository"})
-@EntityScan(basePackages = {"com.momentum.investments.momentformgeneratorservice.repository.entity"})
 @Configuration
-public class AppConfiguration {
+public class AwsConfiguration {
 
     private final String awsRegion;
     private final String awsS3Endpoint;
 
-    public AppConfiguration(@Value("${file-manager.aws.endpoint}") String awsS3Endpoint,
+    public AwsConfiguration(@Value("${file-manager.aws.endpoint}") String awsS3Endpoint,
                             @Value("${file-manager.aws.region}") String awsRegion) {
 
         this.awsRegion = awsRegion;
